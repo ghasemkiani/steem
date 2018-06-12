@@ -1,0 +1,26 @@
+{
+	"name": "@ghasemkiani/steembase",
+	"version": "1.8.0",
+	"description": "Utility classes for working with the STEEM blockchain",
+	"repository": "github:ghasemkiani/steembase",
+	"main": "index.js",
+	"dependencies": {
+		"@ghasemkiani/commonbase": "https://gitlab.com/ghasemkiani/commonbase.git",
+		"coinmarketcap-api": "^2.3.0",
+		"steem": "*"
+	},
+	"devDependencies": {
+		"mocha": "*",
+		"should": ">=0.0.1"
+	},
+	"scripts": {
+		"test": "mocha"
+	},
+	"keywords": [
+		"javascript",
+		"nodejs",
+		"steem"
+	],
+	"author": "Ghasem Kiani",
+	"license": "MIT"
+}
