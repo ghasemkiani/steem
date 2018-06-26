@@ -24,12 +24,16 @@ class Post extends Base {
 		return this._uri;
 	}
 	set uri(uri) {
-		let regex = /\/([^@#/]*)\/(@.*#)?@([^@#/]*)\/([^@#/]*)/;
-		let result = regex.exec(uri);
-		if(result) {
+		let result;
+		if(result = /\/([^@#/]*)\/(@.*#)?@([^@#/]*)\/([^@#/]*)/.exec(uri)) {
 			let tag = result[1];
 			let author = result[3];
 			let permlink = result[4];
+			this._uri = `/${tag}/@${author}/${permlink}`;
+		} else if(result = /^https?\:\/\/d\.tube\/(#!\/)?v\/([^@#/]*)\/([^@#/]*)$/.exec(uri)) {
+			let tag = this.tag;
+			let author = result[1];
+			let permlink = result[2];
 			this._uri = `/${tag}/@${author}/${permlink}`;
 		} else {
 			this._uri = null;

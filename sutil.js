@@ -52,6 +52,12 @@ class SUtil extends Base {
 	getPrivateKeys(username, password, roles) {
 		return this.steem.auth.getPrivateKeys(username, password, roles);
 	}
+	async toStart() {
+		await this.steem.api.start();
+	}
+	async toStop() {
+		await this.steem.api.stop();
+	}
 	async toGetConfig() {
 		this.config = await this.steem.api.getConfigAsync();
 		return this.config;
@@ -83,14 +89,14 @@ class SUtil extends Base {
 	async toGetCoinMarketCapPrices() {
 		let cmc = new CoinMarketCap({version: "v2"});
 		let ticker;
-		
+
 		ticker = await cmc.getTicker({currency: "BTC"});
 		this.price_btc_usd = ticker.data.quotes.USD.price;
-		
+
 		ticker = await cmc.getTicker({currency: "STEEM"});
 		this.price_steem_usd = ticker.data.quotes.USD.price;
 		this.price_steem_btc = this.price_steem_usd / this.price_btc_usd;
-		
+
 		ticker = await cmc.getTicker({currency: "SBD"});
 		this.price_sbd_usd = ticker.data.quotes.USD.price;
 		this.price_sbd_btc = this.price_sbd_usd / this.price_btc_usd;
