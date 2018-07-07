@@ -247,6 +247,13 @@ class Account extends Base {
 			return await sutil.toClaimRewardBalance(wif, account, rewardSteem, rewardSbd, rewardVests);
 		}
 	}
+	async toPowerUp(steem, to) {
+		let wif = this.auth.active.key;
+		let from = this.username;
+		to = to || this.username;
+		let amount = asset.steem(steem).s();
+		return await sutil.toPowerUp(wif, from, to, amount);
+	}
 	async toPowerDown(vests) {
 		return await sutil.toPowerDown(this.auth.active.key, this.username, asset.vests(vests).s());
 	}
