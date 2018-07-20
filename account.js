@@ -312,15 +312,36 @@ class Account extends Base {
 		}
 		let date = post ? post.date_created || quantity.time().now().u("day").delta(-7).date() : quantity.time().now().u("day").delta(-days).date();
 		let bids = [];
+		let refunds = {};
 		let from = this.username;
 		await this.toGetHistory({
 			onItem(item, items) {
 				if(quantity.time().period(item.date, date).n() > 0) {
 					items.end = true;
+				} else if(item.op.kind === "transfer" && item.op.to === from) {
+					let bot = item.op.from;
+					let unit = sutil.assetUnit(item.op.amount);
+					let n = sutil.assetNum(item.op.amount);
+					if(!(bot in refunds)) {
+						refunds[bot] = {};
+						refunds[bot]["SBD"] = 0;
+						refunds[bot]["STEEM"] = 0;
+					}
+					refunds[bot][unit] += n;
 				} else if(item.op.kind === "transfer" && item.op.from === from && (post ? (item.op.memo === url) :  String(item.op.memo).startsWith(url_stub))) {
+					let amount = item.op.amount;
+					let bot = item.op.to;
+					if(bot in refunds) {
+						let unit = sutil.assetUnit(item.op.amount);
+						let n = sutil.assetNum(item.op.amount);
+						let delta = Math.min(refunds[bot][unit], n);
+						refunds[bot][unit] -= delta;
+						n -= delta;
+						amount = asset.steem(amount).n(n);
+					}
 					bids.push({
 						date: item.date,
-						amount: item.op.amount,
+						amount: amount,
 						bot: item.op.to,
 						url: item.op.memo,
 					});
