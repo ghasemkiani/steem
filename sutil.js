@@ -520,6 +520,11 @@ class SUtil extends Base {
 	async toGetTransaction(trxId) {
 		return await this.steem.api.getTransactionAsync(trxId);
 	}
+	async toGetAccountCreationFee() {
+		await this.toGetConfig();
+		await this.toGetChainProperties();
+		return this.config.STEEMIT_CREATE_ACCOUNT_WITH_STEEM_MODIFIER * this.assetNum(this.chainProperties.account_creation_fee);
+	}
 }
 cutil.extend(SUtil.prototype, {
 	URLS: [
