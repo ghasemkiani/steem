@@ -386,6 +386,11 @@ class Account extends Base {
 	async toResteem(post) {
 		return await sutil.toResteem(this.auth.posting.key, this.username, post.author, post.permlink);
 	}
+	async toDelegate(delegatee, vesting_shares) {
+		let wif = this.auth.active.key;
+		let delegator = this.username;
+		return await sutil.toDelegate(wif, delegator, delegatee, vesting_shares);
+	}
 }
 
 module.exports = {
