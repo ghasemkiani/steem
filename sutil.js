@@ -507,7 +507,7 @@ class SUtil extends Base {
 			while(true) {
 				let block = await this.toGetBlock(blockNumber++);
 				for(let item of block.transactions) {
-					if(item.op.kind === "fill_vesting_withdraw") {
+					if(item.op.kind === "fill_vesting_withdraw" && parseFloat(item.op.withdrawn) > 0) {
 						price = parseFloat(item.op.deposited) / parseFloat(item.op.withdrawn);
 						break loop;
 					}
