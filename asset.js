@@ -44,6 +44,20 @@ class Asset extends Quantity {
 	usd(n) {
 		return this.u("USD").fromString(n);
 	}
+	async toApplyVestsPriceAtBlock(blockNumber) {
+		let unit = this.defUnit();
+		let price = await sutil.toGetVestsPriceAtBlock(blockNumber);
+		if(unit === "VESTS") {
+			this.kMap.STEEM = 1 / price;
+			this.kMap.SBD = 1 / (price * sutil.price);
+			this.kMap.USD = 1 / (price * sutil.price_steem_usd);
+		} else if(unit === "STEEM") {
+			this.kMap.VESTS = price;
+		} else if(unit === "SBD") {
+			this.kMap.VESTS = (1 / price) * sutil.price;
+		}
+		return this;
+	}
 }
 
 class Steem extends Asset {
@@ -105,6 +119,11 @@ let asset = new(class extends Base {
 		}
 		vests(...args) {
 			return new Vests(...args);
+		}
+		async toGetVestsAtBlock(blockNumber) {
+			let asset = new Vests();
+			await asset.toApplyVestsPriceAtBlock(blockNumber);
+			return asset;
 		}
 		usd(...args) {
 			return new USD(...args);

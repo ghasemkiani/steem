@@ -431,8 +431,24 @@ class SUtil extends Base {
 		let state = await this.toGetState();
 		return state.props.head_block_number;
 	}
-	async toGetBlock(blockNumber) {
-		return await this.steem.api.getBlockAsync(blockNumber);
+	async toGetBlock(blockNumber, noVirtual) {
+		let block = await this.steem.api.getBlockAsync(blockNumber);
+		block.date = this.timeDate(block.timestamp);
+		block.transactions.forEach(item => {
+			if (item.operations[0]) {
+				item.op = item.operations[0].reduce((a, b) => ((b.kind = a), b));
+			} else {
+				item.op = {kind: ""};
+			}
+		});
+		if(!noVirtual) {
+			block.ops = await this.steem.api.getOpsInBlockAsync(blockNumber, true);
+			block.ops.forEach(item => {
+				item.op = item.op.reduce((a, b) => ((b.kind = a), b));
+				block.transactions.push(item);
+			});
+		}
+		return block;
 	}
 	async toBrowseBlocks(arg) {
 		arg = Object.assign({
@@ -450,14 +466,6 @@ class SUtil extends Base {
 				// console.log(arg.blockNumber);
 				let block = await this.toGetBlock(arg.blockNumber);
 				if (block) {
-					block.date = this.timeDate(block.timestamp);
-					block.transactions.forEach(item => {
-						if (item.operations[0]) {
-							item.op = item.operations[0].reduce((a, b) => ((b.kind = a), b));
-						} else {
-							item.op = {kind: ""};
-						}
-					});
 					await arg.toProcessBlock(block);
 					for(let item of block.transactions) {
 						if (arg.stop) {
@@ -478,6 +486,35 @@ class SUtil extends Base {
 				console.log(e.message);
 			}
 		};
+	}
+	async toGetVestsPriceAtBlock(blockNumber) {
+		if(!blockNumber) {
+			blockNumber = await this.toGetLastBlockNumber();
+		}
+		let price;
+		loop:
+		for(let bn = blockNumber; bn > 0; bn--) {
+			let block = await this.toGetBlock(bn--);
+			for(let item of block.transactions) {
+				if(item.op.kind === "fill_vesting_withdraw") {
+					price = parseFloat(item.op.deposited) / parseFloat(item.op.withdrawn);
+					break loop;
+				}
+			}
+		}
+		if(!price) {
+			loop:
+			while(true) {
+				let block = await this.toGetBlock(blockNumber++);
+				for(let item of block.transactions) {
+					if(item.op.kind === "fill_vesting_withdraw") {
+						price = parseFloat(item.op.deposited) / parseFloat(item.op.withdrawn);
+						break loop;
+					}
+				}
+			}
+		}
+		return price;
 	}
 	async toGetPostsByTag(arg) {
 		if (cutil.isString(arg)) {
