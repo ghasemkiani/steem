@@ -428,47 +428,29 @@ class SUtil extends Base {
 		return await this.steem.api.getStateAsync(path);
 	}
 	async toGetLastBlockNumber() {
-		return await new Promise((resolve, reject) => {
-			let release = sutil.steem.api.streamBlockNumber("head", (err, res) => {
-				if(err) {
-					reject(err);
-				} else {
-					resolve(res);
-					release();
-				}
-			});
-		});
-		// let state = await this.toGetState();
-		// return state.props.head_block_number;
+		return (await this.steem.api.getDynamicGlobalPropertiesAsync()).head_block_number;
 	}
 	async toGetLastIrreversibleBlockNumber() {
-		return await new Promise((resolve, reject) => {
-			let release = sutil.steem.api.streamBlockNumber("irreversible", (err, res) => {
-				if(err) {
-					reject(err);
-				} else {
-					resolve(res);
-					release();
-				}
-			});
-		});
+		return (await this.steem.api.getDynamicGlobalPropertiesAsync()).last_irreversible_block_num;
 	}
 	async toGetBlock(blockNumber, noVirtual) {
 		let block = await this.steem.api.getBlockAsync(blockNumber);
-		block.date = this.timeDate(block.timestamp);
-		block.transactions.forEach(item => {
-			if (item.operations[0]) {
-				item.op = item.operations[0].reduce((a, b) => ((b.kind = a), b));
-			} else {
-				item.op = {kind: ""};
-			}
-		});
-		if(!noVirtual) {
-			block.ops = await this.steem.api.getOpsInBlockAsync(blockNumber, true);
-			block.ops.forEach(item => {
-				item.op = item.op.reduce((a, b) => ((b.kind = a), b));
-				block.transactions.push(item);
+		if(block) {
+			block.date = this.timeDate(block.timestamp);
+			block.transactions.forEach(item => {
+				if (item.operations[0]) {
+					item.op = item.operations[0].reduce((a, b) => ((b.kind = a), b));
+				} else {
+					item.op = {kind: ""};
+				}
 			});
+			if(!noVirtual) {
+				block.ops = await this.steem.api.getOpsInBlockAsync(blockNumber, true);
+				block.ops.forEach(item => {
+					item.op = item.op.reduce((a, b) => ((b.kind = a), b));
+					block.transactions.push(item);
+				});
+			}
 		}
 		return block;
 	}
