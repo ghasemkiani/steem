@@ -1,6 +1,6 @@
 {
 	"name": "@ghasemkiani/steembase",
-	"version": "1.15.0",
+	"version": "1.16.0",
 	"description": "Utility classes for working with the STEEM blockchain",
 	"repository": "github:ghasemkiani/steembase",
 	"main": "index.js",

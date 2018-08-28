@@ -428,8 +428,30 @@ class SUtil extends Base {
 		return await this.steem.api.getStateAsync(path);
 	}
 	async toGetLastBlockNumber() {
-		let state = await this.toGetState();
-		return state.props.head_block_number;
+		return await new Promise((resolve, reject) => {
+			let release = sutil.steem.api.streamBlockNumber("head", (err, res) => {
+				if(err) {
+					reject(err);
+				} else {
+					resolve(res);
+					release();
+				}
+			});
+		});
+		// let state = await this.toGetState();
+		// return state.props.head_block_number;
+	}
+	async toGetLastIrreversibleBlockNumber() {
+		return await new Promise((resolve, reject) => {
+			let release = sutil.steem.api.streamBlockNumber("irreversible", (err, res) => {
+				if(err) {
+					reject(err);
+				} else {
+					resolve(res);
+					release();
+				}
+			});
+		});
 	}
 	async toGetBlock(blockNumber, noVirtual) {
 		let block = await this.steem.api.getBlockAsync(blockNumber);
