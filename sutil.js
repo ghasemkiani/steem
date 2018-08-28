@@ -460,6 +460,7 @@ class SUtil extends Base {
 			offset: 0,
 			async toProcessBlock(block) {},
 			async toProcessItem(item, block) {},
+			noVirtual: false,
 			stop: false,
 		}, arg);
 		if (!arg.blockNumber) {
@@ -468,7 +469,7 @@ class SUtil extends Base {
 		while(!arg.stop) {
 			try {
 				// console.log(arg.blockNumber);
-				let block = await this.toGetBlock(arg.blockNumber);
+				let block = await this.toGetBlock(arg.blockNumber, arg.noVirtual);
 				if (block) {
 					await arg.toProcessBlock(block);
 					for(let item of block.transactions) {
