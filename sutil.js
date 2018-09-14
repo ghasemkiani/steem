@@ -1,6 +1,7 @@
 //	@ghasemkiani/steembase/sutil
 
 const CoinMarketCap = require("coinmarketcap-api");
+const cryptocompare = require("cryptocompare");
 const {Base} = require("@ghasemkiani/commonbase/base");
 const {cutil} = require("@ghasemkiani/commonbase/cutil");
 const {quantity} = require("@ghasemkiani/commonbase/util/quantity");
@@ -101,12 +102,31 @@ class SUtil extends Base {
 		this.price_sbd_usd = ticker.data.quotes.USD.price;
 		this.price_sbd_btc = this.price_sbd_usd / this.price_btc_usd;
 	}
+	async toGetCryptoComparePrices() {
+		if(!global.fetch) {
+			global.fetch = require("node-fetch");
+		}
+		let result;
+		result = await cryptocompare.price("BTC", ["USD"]);
+		this.price_btc_usd = result.USD;
+
+		result = await cryptocompare.price("STEEM", ["BTC", "USD"]);
+		this.price_steem_usd = result.USD;
+		this.price_steem_btc = result.BTC;
+
+		result = await cryptocompare.price("SBD*", ["BTC", "USD"]);
+		this.price_sbd_usd = result.USD;
+		this.price_sbd_btc = result.BTC;
+	}
 	async toUpdateGlobals() {
 		await this.toGetDynamicGlobalProperties();
 		await this.toGetCurrentMedianHistoryPrice();
 		await this.toGetRewardFund();
 		if(this.cmc) {
 			await this.toGetCoinMarketCapPrices();
+		}
+		if(this.cc) {
+			await this.toGetCryptoComparePrices();
 		}
 		await this.toGetInternalMarketPrice();
 		return this;
@@ -595,7 +615,8 @@ cutil.extend(SUtil.prototype, {
 	price_steem_btc: null,
 	price_sbd_usd: null,
 	price_sbd_btc: null,
-	cmc: true,
+	cmc: false,
+	cc: true,
 });
 
 let sutil = new SUtil();
