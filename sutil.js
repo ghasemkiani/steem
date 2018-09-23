@@ -594,6 +594,7 @@ cutil.extend(SUtil.prototype, {
 		"https://steemd.privex.io",
 		"https://api.steemit.com",
 		"https://rpc.steemliberator.com",
+		"https://api.steem.house",
 		"https://gtg.steem.house:8090",
 		"https://steemd.minnowsupportproject.org",
 		"https://rpc.buildteam.io",
