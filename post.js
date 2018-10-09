@@ -114,9 +114,15 @@ class Post extends Base {
 				this.tag = this.json_metadata.tags[0];
 			}
 		}
-		this.tag = this.data.category;
-		this.author = this.data.author;
-		this.permlink = this.data.permlink;
+		if(this.data.category) {
+			this.tag = this.data.category;
+		}
+		if(this.data.author) {
+			this.author = this.data.author;
+		}
+		if(this.data.permlink) {
+			this.permlink = this.data.permlink;
+		}
 		this.title = this.data.title;
 		this.body = this.data.body;
 		let date_created = this.date_created;
