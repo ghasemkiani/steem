@@ -587,6 +587,12 @@ class SUtil extends Base {
 		await this.toGetChainProperties();
 		return this.config.STEEMIT_CREATE_ACCOUNT_WITH_STEEM_MODIFIER * this.assetNum(this.chainProperties.account_creation_fee);
 	}
+	encrypt(key, address, memo) {
+		return this.steem.memo.encode(key, address, memo);
+	}
+	decrypt(key, memo) {
+		return this.steem.memo.decode(key, memo);
+	}
 }
 cutil.extend(SUtil.prototype, {
 	URLS: [

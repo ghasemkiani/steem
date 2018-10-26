@@ -257,9 +257,20 @@ class Account extends Base {
 	async toPowerDown(vests) {
 		return await sutil.toPowerDown(this.auth.active.key, this.username, asset.vests(vests).s());
 	}
+	encrypt(account, memo) {
+		return sutil.encrypt(this.auth.memo.key, account.auth.memo.address, memo);
+	}
+	decrypt(memo) {
+		return sutil.decrypt(this.auth.memo.key, memo);
+	}
 	async toTransfer(to, amount, memo) {
 		let wif = this.auth.active.key;
 		let from = this.username;
+		if(/^#/.test(memo)) {
+			let account = new Account({username: to});
+			await account.toUpdateData();
+			memo = this.encrypt(account, memo);
+		}
 		return await sutil.toTransfer(wif, from, to, amount, memo);
 	}
 	async toGetHistory(arg) {
