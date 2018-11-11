@@ -447,8 +447,9 @@ class SUtil extends Base {
 	async toGetState(path = "/") {
 		return await this.steem.api.getStateAsync(path);
 	}
-	async toGetLastBlockNumber() {
-		return (await this.steem.api.getDynamicGlobalPropertiesAsync()).head_block_number;
+	async toGetLastBlockNumber(irreversible) {
+		let prop = irreversible ? "last_irreversible_block_num" : "head_block_number";
+		return (await this.steem.api.getDynamicGlobalPropertiesAsync())[prop];
 	}
 	async toGetLastIrreversibleBlockNumber() {
 		return (await this.steem.api.getDynamicGlobalPropertiesAsync()).last_irreversible_block_num;
@@ -511,6 +512,41 @@ class SUtil extends Base {
 				console.log(e.message);
 			}
 		};
+	}
+	async toStreamBlocks(arg) {
+		arg = Object.assign({
+			irreversible: false,
+			async toProcessBlock(block) {},
+			async toProcessItem(item, block) {},
+			noVirtual: false,
+			stop: false,
+		}, arg);
+		return new Promise((resolve, reject) => {
+			let release = this.steem.api.streamBlockNumber(arg.irreversible ? "irreversible" : "head", async (e, blockNumber) => {
+				if(e) {
+					release();
+					reject(e);
+				} else {
+					try {
+						let block = await this.toGetBlock(blockNumber, arg.noVirtual);
+						await arg.toProcessBlock(block);
+						for(let item of block.transactions) {
+							if (arg.stop) {
+								break;
+							}
+							await arg.toProcessItem(item, block);
+						}
+						if (arg.stop) {
+							release();
+							resolve();
+						}
+					} catch(e) {
+						release();
+						reject(e);
+					}
+				}
+			});
+		});
 	}
 	async toGetVestsPriceAtBlock(blockNumber) {
 		if(!blockNumber) {
