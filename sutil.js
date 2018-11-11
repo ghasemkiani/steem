@@ -488,28 +488,24 @@ class SUtil extends Base {
 			arg.blockNumber = await this.toGetLastBlockNumber() + arg.offset;
 		}
 		while(!arg.stop) {
-			try {
-				// console.log(arg.blockNumber);
-				let block = await this.toGetBlock(arg.blockNumber, arg.noVirtual);
-				if (block) {
-					await arg.toProcessBlock(block);
-					for(let item of block.transactions) {
-						if (arg.stop) {
-							break;
-						}
-						await arg.toProcessItem(item, block);
+			// console.log(arg.blockNumber);
+			let block = await this.toGetBlock(arg.blockNumber, arg.noVirtual);
+			if (block) {
+				await arg.toProcessBlock(block);
+				for(let item of block.transactions) {
+					if (arg.stop) {
+						break;
 					}
-					if (!arg.stop) {
-						++arg.blockNumber;
-						let date = quantity.time().date(block.date).u("sec").delta(3).date();
-						// console.log(quantity.time().period(date).u("ms").n());
-						await quantity.time().period(new Date(), date).toSchedule();
-					}
-				} else {
-					await quantity.time().u("sec").n(0.5).toSchedule();
+					await arg.toProcessItem(item, block);
 				}
-			} catch(e) {
-				console.log(e.message);
+				if (!arg.stop) {
+					++arg.blockNumber;
+					let date = quantity.time().date(block.date).u("sec").delta(3).date();
+					// console.log(quantity.time().period(date).u("ms").n());
+					await quantity.time().period(new Date(), date).toSchedule();
+				}
+			} else {
+				await quantity.time().u("sec").n(0.5).toSchedule();
 			}
 		};
 	}
