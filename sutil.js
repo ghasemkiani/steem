@@ -87,19 +87,20 @@ class SUtil extends Base {
 		let price = (price_ask + price_bid) / 2;
 		this.price_steem_sbd = price;
 	}
+	get COINMARKETCAP_APIKEY() {
+		return cutil.isNil(this._COINMARKETCAP_APIKEY) ? process.env.COINMARKETCAP_APIKEY : this._COINMARKETCAP_APIKEY;
+	}
+	set COINMARKETCAP_APIKEY(COINMARKETCAP_APIKEY) {
+		this._COINMARKETCAP_APIKEY = COINMARKETCAP_APIKEY;
+	}
 	async toGetCoinMarketCapPrices() {
-		let cmc = new CoinMarketCap({version: "v2"});
-		let ticker;
-
-		ticker = await cmc.getTicker({currency: "BTC"});
-		this.price_btc_usd = ticker.data.quotes.USD.price;
-
-		ticker = await cmc.getTicker({currency: "STEEM"});
-		this.price_steem_usd = ticker.data.quotes.USD.price;
+		let COINMARKETCAP_APIKEY = process.env.COINMARKETCAP_APIKEY;
+		let cmc = new CoinMarketCap(this.COINMARKETCAP_APIKEY);
+		let quotes = await cmc.getQuotes({symbol: "BTC,STEEM,SBD"});
+		this.price_btc_usd = quotes.data.BTC.quote.USD.price;
+		this.price_steem_usd = quotes.data.STEEM.quote.USD.price;
 		this.price_steem_btc = this.price_steem_usd / this.price_btc_usd;
-
-		ticker = await cmc.getTicker({currency: "SBD"});
-		this.price_sbd_usd = ticker.data.quotes.USD.price;
+		this.price_sbd_usd = quotes.data.SBD.quote.USD.price;
 		this.price_sbd_btc = this.price_sbd_usd / this.price_btc_usd;
 	}
 	async toGetCryptoComparePrices() {
@@ -656,6 +657,7 @@ cutil.extend(SUtil.prototype, {
 	price_sbd_btc: null,
 	cmc: false,
 	cc: true,
+	_COINMARKETCAP_APIKEY: null,
 });
 
 let sutil = new SUtil();
