@@ -19,6 +19,24 @@ class SUtil extends Base {
 			this._steem.api.setOptions({url: url});
 		}
 	}
+	get cmc() {
+		if(cutil.isNil(this._cmc)) {
+			this._cmc = process.env.CRYPTO_PRICE_PROVIDER ? /coinmarketcap/i.test(process.env.CRYPTO_PRICE_PROVIDER) : true;
+		}
+		return this._cmc;
+	}
+	set cmc(cmc) {
+		this._cmc = cmc;
+	}
+	get cc() {
+		if(cutil.isNil(this._cc)) {
+			this._cc = process.env.CRYPTO_PRICE_PROVIDER ? /cryptocompare/i.test(process.env.CRYPTO_PRICE_PROVIDER) : false;
+		}
+		return this._cc;
+	}
+	set cc(cc) {
+		this._cc = cc;
+	}
 	get steem() {
 		if (!this._steem) {
 			this._steem = global.steem ? global.steem : require("steem");
@@ -655,8 +673,8 @@ cutil.extend(SUtil.prototype, {
 	price_steem_btc: null,
 	price_sbd_usd: null,
 	price_sbd_btc: null,
-	cmc: false,
-	cc: true,
+	_cmc: null,
+	_cc: null,
 	_COINMARKETCAP_APIKEY: null,
 });
 
