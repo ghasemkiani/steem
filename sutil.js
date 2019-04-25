@@ -141,11 +141,15 @@ class SUtil extends Base {
 		await this.toGetDynamicGlobalProperties();
 		await this.toGetCurrentMedianHistoryPrice();
 		await this.toGetRewardFund();
-		if(this.cmc) {
-			await this.toGetCoinMarketCapPrices();
-		}
-		if(this.cc) {
-			await this.toGetCryptoComparePrices();
+		let now = Date.now();
+		if(cutil.isNil(this.lastUpdateTime) || ((now - lastUpdateTime) >= this.msUpdateInterval)) {
+			this.lastUpdateTime = now;
+			if(this.cmc) {
+				await this.toGetCoinMarketCapPrices();
+			}
+			if(this.cc) {
+				await this.toGetCryptoComparePrices();
+			}
 		}
 		await this.toGetInternalMarketPrice();
 		return this;
@@ -676,6 +680,8 @@ cutil.extend(SUtil.prototype, {
 	_cmc: null,
 	_cc: null,
 	_COINMARKETCAP_APIKEY: null,
+	lastUpdateTime: null,
+	msUpdateInterval: 0,
 });
 
 let sutil = new SUtil();
