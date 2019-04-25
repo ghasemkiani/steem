@@ -142,7 +142,7 @@ class SUtil extends Base {
 		await this.toGetCurrentMedianHistoryPrice();
 		await this.toGetRewardFund();
 		let now = Date.now();
-		if(cutil.isNil(this.lastUpdateTime) || ((now - lastUpdateTime) >= this.msUpdateInterval)) {
+		if(cutil.isNil(this.lastUpdateTime) || ((now - this.lastUpdateTime) >= this.msUpdateInterval)) {
 			this.lastUpdateTime = now;
 			if(this.cmc) {
 				await this.toGetCoinMarketCapPrices();

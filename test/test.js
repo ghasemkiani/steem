@@ -1,10 +1,12 @@
 //	test
+const {sutil} = require("@ghasemkiani/steembase/sutil");
 
-var assert = require('assert');
-describe('Array', function () {
-	describe('#indexOf()', function () {
-		it('should return -1 when the value is not present', function () {
-			assert.equal([1, 2, 3].indexOf(4), -1);
-		});
+var assert = require("assert");
+describe("sutil", function () {
+	describe("#toUpdateGlobals()", function () {
+		it("should update globals without error", async function () {
+			await sutil.toUpdateGlobals();
+			assert.ok(true);
+		}).timeout(30000);
 	});
 });
