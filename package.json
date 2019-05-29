@@ -1,6 +1,6 @@
 {
   "name": "@ghasemkiani/steembase",
-  "version": "1.27.1",
+  "version": "1.27.2",
   "description": "Utility classes for working with the STEEM blockchain",
   "repository": {
     "type": "git",
@@ -11,8 +11,8 @@
     "@ghasemkiani/commonbase": "github:ghasemkiani/commonbase",
     "coinmarketcap-api": "^3.0.1",
     "cryptocompare": "^0.5.0",
-    "node-fetch": "^2.3.0",
-    "steem": "^0.7.4"
+    "node-fetch": "^2.6.0",
+    "steem": "^0.7.5"
   },
   "devDependencies": {
     "mocha": "^6.1.4"
