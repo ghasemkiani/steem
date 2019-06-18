@@ -37,6 +37,15 @@ class SUtil extends Base {
 	set cc(cc) {
 		this._cc = cc;
 	}
+	get msUpdateInterval() {
+		if(cutil.isNil(this._msUpdateInterval)) {
+			this._msUpdateInterval = !cutil.isNil(process.env.CRYPTO_PRICE_UPDATE_INTERVAL) ? process.env.CRYPTO_PRICE_UPDATE_INTERVAL : 0;
+		}
+		return this._msUpdateInterval;
+	}
+	set msUpdateInterval(msUpdateInterval) {
+		this._msUpdateInterval = msUpdateInterval;
+	}
 	get steem() {
 		if (!this._steem) {
 			this._steem = global.steem ? global.steem : require("steem");
@@ -681,7 +690,7 @@ cutil.extend(SUtil.prototype, {
 	_cc: null,
 	_COINMARKETCAP_APIKEY: null,
 	lastUpdateTime: null,
-	msUpdateInterval: 0,
+	_msUpdateInterval: null,
 });
 
 let sutil = new SUtil();
