@@ -127,7 +127,9 @@ class Post extends Base {
 		this.body = this.data.body;
 		let date_created = this.date_created;
 		this.votes = [];
-		this.data.active_votes.forEach(active_vote => this.addVote(active_vote));
+		if(this.data.active_votes) {
+			this.data.active_votes.forEach(active_vote => this.addVote(active_vote));
+		}
 		this.votes.forEach(vote => {
 			vote.rwshares = vote.rshares / 4;
 			if (vote.min < 30) {
@@ -188,7 +190,8 @@ class Post extends Base {
 		}
 	}
 	get id() {
-		return Number(this.data.id);
+		// hf21: this.data.id => this.data.post_id ?
+		return Number(this.data.id || this.data.post_id);
 	}
 	get title() {
 		return this._title;
@@ -242,6 +245,8 @@ class Post extends Base {
 				return sutil.rep(this.reputation);
 			}
 		}, active_vote);
+		// temporary workaround after hf21
+		// vote.time = sutil.timeStr(quantity.time().date(date_created).u("min").delta(16).date());
 		vote.index = this.votes.length;
 		vote.time = sutil.timeDate(vote.time);
 		vote.reputation = Number(vote.reputation);

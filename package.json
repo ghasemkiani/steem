@@ -1,6 +1,6 @@
 {
   "name": "@ghasemkiani/steembase",
-  "version": "1.28.1",
+  "version": "1.28.2",
   "description": "Utility classes for working with the STEEM blockchain",
   "repository": {
     "type": "git",
@@ -12,10 +12,10 @@
     "coinmarketcap-api": "^3.0.1",
     "cryptocompare": "^0.5.0",
     "node-fetch": "^2.6.0",
-    "steem": "^0.7.5"
+    "steem": "^0.7.9"
   },
   "devDependencies": {
-    "mocha": "^6.1.4"
+    "mocha": "^6.2.2"
   },
   "scripts": {
     "test": "mocha"
