@@ -142,7 +142,7 @@ class SUtil extends Base {
 		this.price_steem_usd = result.USD;
 		this.price_steem_btc = result.BTC;
 
-		result = await cryptocompare.price("SBD*", ["BTC", "USD"]);
+		result = await cryptocompare.price("SBD", ["BTC", "USD"]);
 		this.price_sbd_usd = result.USD;
 		this.price_sbd_btc = result.BTC;
 	}
