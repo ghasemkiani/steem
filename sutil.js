@@ -486,6 +486,52 @@ class SUtil extends Base {
 	async toGetLastIrreversibleBlockNumber() {
 		return (await this.steem.api.getDynamicGlobalPropertiesAsync()).last_irreversible_block_num;
 	}
+	async toGetBlockOnlyVirtual(blockNumber) {
+		let block = await this.steem.api.getBlockHeaderAsync(blockNumber);
+		if(block) {
+			block.date = this.timeDate(block.timestamp);
+			block.transactions = [];
+			block.ops = await this.steem.api.getOpsInBlockAsync(blockNumber, true);
+			block.ops.forEach(item => {
+				item.op = item.op.reduce((a, b) => ((b.kind = a), b));
+				block.transactions.push(item);
+			});
+		}
+		return block;
+	}
+	async toBrowseBlocksOnlyVirtual(arg) {
+		arg = Object.assign({
+			blockNumber: null,
+			offset: 0,
+			async toProcessBlock(block) {},
+			async toProcessItem(item, block) {},
+			stop: false,
+		}, arg);
+		if (!arg.blockNumber) {
+			arg.blockNumber = await this.toGetLastBlockNumber() + arg.offset;
+		}
+		while(!arg.stop) {
+			// console.log(arg.blockNumber);
+			let block = await this.toGetBlockOnlyVirtual(arg.blockNumber);
+			if (block) {
+				await arg.toProcessBlock(block);
+				for(let item of block.transactions) {
+					if (arg.stop) {
+						break;
+					}
+					await arg.toProcessItem(item, block);
+				}
+				if (!arg.stop) {
+					++arg.blockNumber;
+					let date = quantity.time().date(block.date).u("sec").delta(3).date();
+					// console.log(quantity.time().period(date).u("ms").n());
+					await quantity.time().period(new Date(), date).toSchedule();
+				}
+			} else {
+				await quantity.time().u("sec").n(0.5).toSchedule();
+			}
+		};
+	}
 	async toGetBlock(blockNumber, noVirtual) {
 		let block = await this.steem.api.getBlockAsync(blockNumber);
 		if(block) {

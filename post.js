@@ -7,19 +7,6 @@ const {cutil} = require("@ghasemkiani/commonbase/cutil");
 const {quantity} = require("@ghasemkiani/commonbase/util/quantity");
 
 class Post extends Base {
-	// _uri
-	// _author
-	// _permlink
-	// _tag
-	// _url
-	// _data
-	// _json_metadata
-	// _title
-	// _body
-	// _net_rshares
-	// min
-	// votes
-
 	get uri() {
 		return this._uri;
 	}
@@ -131,9 +118,9 @@ class Post extends Base {
 			this.data.active_votes.forEach(active_vote => this.addVote(active_vote));
 		}
 		this.votes.forEach(vote => {
-			vote.rwshares = vote.rshares / 4;
-			if (vote.min < 30) {
-				vote.rwshares *= vote.min / 30;
+			vote.rwshares = vote.rshares * this.CURATION_REWARD_RATIO;
+			if (vote.min < this.CURATION_THRESHOLD_MINS) {
+				vote.rwshares *= vote.min / this.CURATION_THRESHOLD_MINS;
 			}
 			vote.reward = 0;
 		});
@@ -143,8 +130,8 @@ class Post extends Base {
 		if (this.totweights !== 0) {
 			this.votes.forEach(vote => {
 				vote.reward = this.totrwshares * vote.weight / this.totweights;
-				if (vote.min < 30) {
-					vote.reward *= vote.min / 30;
+				if (vote.min < this.CURATION_THRESHOLD_MINS) {
+					vote.reward *= vote.min / this.CURATION_THRESHOLD_MINS;
 				}
 			});
 		}
@@ -286,6 +273,23 @@ class Post extends Base {
 		return this.votes.some(vote => vote.voter === account.username);
 	}
 }
+cutil.extend(Post.prototype, {
+	_uri: null,
+	_author: null,
+	_permlink: null,
+	_tag: null,
+	_url: null,
+	_data: null,
+	_json_metadata: null,
+	_title: null,
+	_body: null,
+	_net_rshares: null,
+	
+	// CURATION_THRESHOLD_MINS: 30,
+	CURATION_THRESHOLD_MINS: 5,
+	// CURATION_REWARD_RATIO: 0.25,
+	CURATION_REWARD_RATIO: 0.5,
+});
 
 module.exports = {
 	Post,
