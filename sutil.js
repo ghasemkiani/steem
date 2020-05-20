@@ -695,7 +695,7 @@ class SUtil extends Base {
 	async toGetAccountCreationFee() {
 		await this.toGetConfig();
 		await this.toGetChainProperties();
-		return this.config.STEEMIT_CREATE_ACCOUNT_WITH_STEEM_MODIFIER * this.assetNum(this.chainProperties.account_creation_fee);
+		return this.config.STEEM_CREATE_ACCOUNT_WITH_STEEM_MODIFIER * this.assetNum(this.chainProperties.account_creation_fee);
 	}
 	encrypt(key, address, memo) {
 		return this.steem.memo.encode(key, address, memo);

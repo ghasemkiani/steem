@@ -244,6 +244,9 @@ class Account extends Base {
 			let rewardSteem = this.data.reward_steem_balance;
 			let rewardSbd = this.data.reward_sbd_balance;
 			let rewardVests = this.data.reward_vesting_balance;
+			// HIVE workaround
+			rewardSteem = rewardSteem.replace("HIVE", "STEEM");
+			rewardSbd = rewardSbd.replace("HBD", "SBD");
 			return await sutil.toClaimRewardBalance(wif, account, rewardSteem, rewardSbd, rewardVests);
 		}
 	}
