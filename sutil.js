@@ -182,7 +182,15 @@ class SUtil extends Base {
 		return rshares * reward_balance / recent_claims;
 	}
 	rep(reputation) {
-		return !reputation ? 25 : (Math.log10(reputation) - 9) * 9 + 25;
+		// return !reputation ? 25 : (Math.log10(reputation) - 9) * 9 + 25;
+		
+		let rep = reputation;
+		let multi = (rep < 0) ? -9 : 9;
+		rep = Math.log10(Math.abs(rep));
+		rep = Math.max(rep - 9.35, 0);
+		rep *= multi;
+		rep += 25;
+		return rep;
 	}
 	reputation(rep) {
 		return Math.pow(10, ((rep - 25) / 9) + 9);
