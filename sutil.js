@@ -187,7 +187,7 @@ class SUtil extends Base {
 		let rep = reputation;
 		let multi = (rep < 0) ? -9 : 9;
 		rep = Math.log10(Math.abs(rep));
-		rep = Math.max(rep - 9.35, 0);
+		rep = Math.max(rep - 9, 0);
 		rep *= multi;
 		rep += 25;
 		return rep;
