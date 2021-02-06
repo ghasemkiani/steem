@@ -135,6 +135,12 @@ class Post extends Base {
 				}
 			});
 		}
+		
+		// tax?
+		this.votes.forEach(vote => {
+			const TAX = 0.005 / sutil.rsharesToSteem(1);
+			vote.reward = Math.max(0, vote.reward - TAX);
+		});
 
 		this.votes.forEach(vote => {
 			vote.wtrs = vote.weight == 0 || vote.rwshares == 0 ? 0 : (vote.weight / this.totweights) / (vote.rshares / this.totrshares);
