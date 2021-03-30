@@ -1,4 +1,4 @@
-# steembase
+# @ghasemkiani/steem
 Utility classes for working with the STEEM blockchain
 
 ---
