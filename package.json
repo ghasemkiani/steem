@@ -1,6 +1,6 @@
 {
   "name": "@ghasemkiani/steem",
-  "version": "1.33.1",
+  "version": "1.34.0",
   "description": "Utility classes for working with the STEEM blockchain",
   "repository": {
     "type": "git",

@@ -1,11 +1,11 @@
-//	@ghasemkiani/steembase/account
+//	@ghasemkiani/steem/account
 
 const {Base} = require("@ghasemkiani/commonbase/base");
 const {cutil} = require("@ghasemkiani/commonbase/cutil");
 const {quantity} = require("@ghasemkiani/commonbase/util/quantity");
-const {sutil} = require("@ghasemkiani/steembase/sutil");
-const {asset} = require("@ghasemkiani/steembase/asset");
-const {Post} = require("@ghasemkiani/steembase/post");
+const {sutil} = require("@ghasemkiani/steem/sutil");
+const {asset} = require("@ghasemkiani/steem/asset");
+const {Post} = require("@ghasemkiani/steem/post");
 
 class Account extends Base {
 	// _username

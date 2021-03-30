@@ -1,4 +1,4 @@
-//	@ghasemkiani/steembase/sutil
+//	@ghasemkiani/steem/sutil
 
 const CoinMarketCap = require("coinmarketcap-api");
 const cryptocompare = require("cryptocompare");
