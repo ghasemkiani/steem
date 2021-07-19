@@ -1,8 +1,8 @@
 //	@ghasemkiani/steem/account
 
-const {Base} = require("@ghasemkiani/commonbase/base");
-const {cutil} = require("@ghasemkiani/commonbase/cutil");
-const {quantity} = require("@ghasemkiani/commonbase/util/quantity");
+const {Obj: Base} = require("@ghasemkiani/base/obj");
+const {cutil} = require("@ghasemkiani/base/cutil");
+const {quantity} = require("@ghasemkiani/base-utils/quantity");
 const {sutil} = require("@ghasemkiani/steem/sutil");
 const {asset} = require("@ghasemkiani/steem/asset");
 const {Post} = require("@ghasemkiani/steem/post");

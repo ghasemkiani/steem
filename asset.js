@@ -1,8 +1,8 @@
 //	@ghasemkiani/steem/asset
 
-const {Base} = require("@ghasemkiani/commonbase/base");
-const {cutil} = require("@ghasemkiani/commonbase/cutil");
-const {Quantity} = require("@ghasemkiani/commonbase/util/quantity");
+const {Obj: Base} = require("@ghasemkiani/base/obj");
+const {cutil} = require("@ghasemkiani/base/cutil");
+const {Quantity} = require("@ghasemkiani/base-utils/quantity");
 const {sutil} = require("@ghasemkiani/steem/sutil");
 
 class Asset extends Quantity {

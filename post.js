@@ -1,10 +1,10 @@
 //	@ghasemkiani/steem/post
 
-const {Base} = require("@ghasemkiani/commonbase/base");
+const {Obj: Base} = require("@ghasemkiani/base/obj");
 const {sutil} = require("@ghasemkiani/steem/sutil");
 const {asset} = require("@ghasemkiani/steem/asset");
-const {cutil} = require("@ghasemkiani/commonbase/cutil");
-const {quantity} = require("@ghasemkiani/commonbase/util/quantity");
+const {cutil} = require("@ghasemkiani/base/cutil");
+const {quantity} = require("@ghasemkiani/base-utils/quantity");
 
 class Post extends Base {
 	get uri() {

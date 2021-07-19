@@ -2,9 +2,9 @@
 
 const CoinMarketCap = require("coinmarketcap-api");
 const cryptocompare = require("cryptocompare");
-const {Base} = require("@ghasemkiani/commonbase/base");
-const {cutil} = require("@ghasemkiani/commonbase/cutil");
-const {quantity} = require("@ghasemkiani/commonbase/util/quantity");
+const {Obj: Base} = require("@ghasemkiani/base/obj");
+const {cutil} = require("@ghasemkiani/base/cutil");
+const {quantity} = require("@ghasemkiani/base-utils/quantity");
 
 class SUtil extends Base {
 	get url() {
