@@ -2,6 +2,7 @@
 
 import CoinMarketCap from "coinmarketcap-api";
 import cryptocompare from "cryptocompare";
+import steem from "steem";
 
 import {Obj} from "@ghasemkiani/base";
 import {cutil} from "@ghasemkiani/base";
@@ -49,7 +50,7 @@ class SUtil extends Obj {
 	}
 	get steem() {
 		if (!this._steem) {
-			this._steem = global.steem ? global.steem : require("steem");
+			this._steem = global.steem ? global.steem : steem;
 			if(this.url) {
 				this._steem.api.setOptions({url: this.url});
 			}
