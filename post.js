@@ -1,12 +1,12 @@
 //	@ghasemkiani/steem/post
 
-const {Obj: Base} = require("@ghasemkiani/base/obj");
-const {sutil} = require("@ghasemkiani/steem/sutil");
-const {asset} = require("@ghasemkiani/steem/asset");
-const {cutil} = require("@ghasemkiani/base/cutil");
-const {quantity} = require("@ghasemkiani/base-utils/quantity");
+import {Obj} from "@ghasemkiani/base";
+import {cutil} from "@ghasemkiani/base";
+import {quantity} from "@ghasemkiani/base-utils";
+import {sutil} from "./sutil.js";
+import {asset} from "./asset.js";
 
-class Post extends Base {
+class Post extends Obj {
 	get uri() {
 		return this._uri;
 	}
@@ -297,6 +297,4 @@ cutil.extend(Post.prototype, {
 	CURATION_REWARD_RATIO: 0.5,
 });
 
-module.exports = {
-	Post,
-};
+export {Post};

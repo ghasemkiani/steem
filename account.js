@@ -1,13 +1,13 @@
 //	@ghasemkiani/steem/account
 
-const {Obj: Base} = require("@ghasemkiani/base/obj");
-const {cutil} = require("@ghasemkiani/base/cutil");
-const {quantity} = require("@ghasemkiani/base-utils/quantity");
-const {sutil} = require("@ghasemkiani/steem/sutil");
-const {asset} = require("@ghasemkiani/steem/asset");
-const {Post} = require("@ghasemkiani/steem/post");
+import {Obj} from "@ghasemkiani/base";
+import {cutil} from "@ghasemkiani/base";
+import {quantity} from "@ghasemkiani/base-utils";
+import {sutil} from "./sutil.js";
+import {asset} from "./asset.js";
+import {Post} from "./post.js";
 
-class Account extends Base {
+class Account extends Obj {
 	// _username
 	// _password
 	// _auth
@@ -407,6 +407,4 @@ class Account extends Base {
 	}
 }
 
-module.exports = {
-	Account,
-};
+export {Account};

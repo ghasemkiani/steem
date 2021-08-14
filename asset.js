@@ -1,9 +1,9 @@
 //	@ghasemkiani/steem/asset
 
-const {Obj: Base} = require("@ghasemkiani/base/obj");
-const {cutil} = require("@ghasemkiani/base/cutil");
-const {Quantity} = require("@ghasemkiani/base-utils/quantity");
-const {sutil} = require("@ghasemkiani/steem/sutil");
+import {Obj} from "@ghasemkiani/base";
+import {cutil} from "@ghasemkiani/base";
+import {Quantity} from "@ghasemkiani/base-utils";
+import {sutil} from "./sutil.js";
 
 class Asset extends Quantity {
 	constructor(...args) {
@@ -106,7 +106,7 @@ class USD extends Asset {
 	}
 }
 
-let asset = new(class extends Base {
+let asset = new(class extends Obj {
 		async toUpdate() {
 			await sutil.toUpdateGlobals();
 			return this;
@@ -133,10 +133,4 @@ let asset = new(class extends Base {
 		}
 	})();
 
-module.exports = {
-	Asset,
-	Steem,
-	SBD,
-	Vests,
-	asset,
-};
+export {Asset, Steem, SBD, Vests, asset};

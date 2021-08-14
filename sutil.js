@@ -1,12 +1,13 @@
 //	@ghasemkiani/steem/sutil
 
-const CoinMarketCap = require("coinmarketcap-api");
-const cryptocompare = require("cryptocompare");
-const {Obj: Base} = require("@ghasemkiani/base/obj");
-const {cutil} = require("@ghasemkiani/base/cutil");
-const {quantity} = require("@ghasemkiani/base-utils/quantity");
+import CoinMarketCap from "coinmarketcap-api";
+import cryptocompare from "cryptocompare";
 
-class SUtil extends Base {
+import {Obj} from "@ghasemkiani/base";
+import {cutil} from "@ghasemkiani/base";
+import {quantity} from "@ghasemkiani/base-utils";
+
+class SUtil extends Obj {
 	get url() {
 		if (!this._url) {
 			this._url = process.env.STEEM_NODE || this.URLS[0];
@@ -131,9 +132,6 @@ class SUtil extends Base {
 		this.price_sbd_btc = this.price_sbd_usd / this.price_btc_usd;
 	}
 	async toGetCryptoComparePrices() {
-		if(!global.fetch) {
-			global.fetch = require("node-fetch");
-		}
 		let result;
 		result = await cryptocompare.price("BTC", ["USD"]);
 		this.price_btc_usd = result.USD;
@@ -749,7 +747,4 @@ cutil.extend(SUtil.prototype, {
 
 let sutil = new SUtil();
 
-module.exports = {
-	SUtil,
-	sutil,
-};
+export {SUtil, sutil};
