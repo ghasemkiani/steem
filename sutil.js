@@ -713,6 +713,7 @@ class SUtil extends Obj {
 }
 cutil.extend(SUtil.prototype, {
 	URLS: [
+		"https://api.steemitdev.com",
 		"https://steemd.pevo.science",
 		"https://steemd.privex.io",
 		"https://api.steemit.com",
