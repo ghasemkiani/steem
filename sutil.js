@@ -636,7 +636,7 @@ class SUtil extends Obj {
 		let price;
 		loop:
 		for(let bn = blockNumber; bn > 0; bn--) {
-			let block = await this.toGetBlock(bn--);
+			let block = await this.toGetBlock(bn);
 			for(let item of block.transactions) {
 				if(item.op.kind === "fill_vesting_withdraw" && parseFloat(item.op.withdrawn) > 0) {
 					price = parseFloat(item.op.deposited) / parseFloat(item.op.withdrawn);
