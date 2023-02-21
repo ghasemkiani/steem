@@ -17,9 +17,8 @@
 	},
 	"scripts": {},
 	"keywords": [
-		"javascript",
-		"nodejs",
-		"steem"
+		"steem",
+		"blockchain"
 	],
 	"author": "Ghasem Kiani",
 	"license": "MIT"

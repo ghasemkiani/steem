@@ -539,7 +539,7 @@ class SUtil extends Obj {
 			}
 		};
 	}
-	async toGetBlock(blockNumber, noVirtual) {
+	async toGetBlock(blockNumber, noVirtual = false) {
 		let block = await this.steem.api.getBlockAsync(blockNumber);
 		if(block) {
 			block.date = this.timeDate(block.timestamp);
