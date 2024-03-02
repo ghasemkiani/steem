@@ -1,5 +1,3 @@
-//	@ghasemkiani/steem/sutil
-
 import CoinMarketCap from "coinmarketcap-api";
 import cryptocompare from "cryptocompare";
 import steem from "steem";
@@ -9,6 +7,43 @@ import {cutil} from "@ghasemkiani/base";
 import {quantity} from "@ghasemkiani/base-utils";
 
 class SUtil extends Obj {
+	static {
+		cutil.extend(this.prototype, {
+			URLS: [
+				"https://api.steemitdev.com",
+				"https://steemd.pevo.science",
+				"https://steemd.privex.io",
+				"https://api.steemit.com",
+				"https://rpc.steemliberator.com",
+				"https://api.steem.house",
+				"https://gtg.steem.house:8090",
+				"https://steemd.minnowsupportproject.org",
+				"https://rpc.buildteam.io",
+				"wss://steemd.pevo.science",
+				"wss://steemd.privex.io",
+				"wss://steemd.minnowsupportproject.org",
+				"wss://rpc.steemviz.com",
+				"wss://gtg.steem.house:8090",
+			],
+			_appName: null,
+			_url: null,
+			_steem: null,
+			config: null,
+			chainProperties: null,
+			dynamicGlobalProperties: null,
+			currentMedianHistoryPrice: null,
+			price: null,
+			price_steem_usd: null,
+			price_steem_btc: null,
+			price_sbd_usd: null,
+			price_sbd_btc: null,
+			_cmc: null,
+			_cc: null,
+			_COINMARKETCAP_APIKEY: null,
+			lastUpdateTime: null,
+			_msUpdateInterval: null,
+		});
+	}
 	get url() {
 		if (!this._url) {
 			this._url = process.env.STEEM_NODE || this.URLS[0];
@@ -711,41 +746,6 @@ class SUtil extends Obj {
 		return this.steem.memo.decode(key, memo);
 	}
 }
-cutil.extend(SUtil.prototype, {
-	URLS: [
-		"https://api.steemitdev.com",
-		"https://steemd.pevo.science",
-		"https://steemd.privex.io",
-		"https://api.steemit.com",
-		"https://rpc.steemliberator.com",
-		"https://api.steem.house",
-		"https://gtg.steem.house:8090",
-		"https://steemd.minnowsupportproject.org",
-		"https://rpc.buildteam.io",
-		"wss://steemd.pevo.science",
-		"wss://steemd.privex.io",
-		"wss://steemd.minnowsupportproject.org",
-		"wss://rpc.steemviz.com",
-		"wss://gtg.steem.house:8090",
-	],
-	_appName: null,
-	_url: null,
-	_steem: null,
-	config: null,
-	chainProperties: null,
-	dynamicGlobalProperties: null,
-	currentMedianHistoryPrice: null,
-	price: null,
-	price_steem_usd: null,
-	price_steem_btc: null,
-	price_sbd_usd: null,
-	price_sbd_btc: null,
-	_cmc: null,
-	_cc: null,
-	_COINMARKETCAP_APIKEY: null,
-	lastUpdateTime: null,
-	_msUpdateInterval: null,
-});
 
 let sutil = new SUtil();
 

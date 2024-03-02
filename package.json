@@ -1,13 +1,14 @@
 {
 	"name": "@ghasemkiani/steem",
-	"version": "2.2.3",
+	"version": "2.2.4",
 	"description": "Utility classes for working with the STEEM blockchain",
+	"type": "module",
+	"main": "index.js",
+	"scripts": {},
 	"repository": {
 		"type": "git",
 		"url": "git+https://github.com/ghasemkiani/steem.git"
 	},
-	"type": "module",
-	"main": "index.js",
 	"dependencies": {
 		"@ghasemkiani/base": "github:ghasemkiani/base",
 		"@ghasemkiani/base-utils": "github:ghasemkiani/base-utils",
@@ -15,7 +16,6 @@
 		"cryptocompare": "^1.0.0",
 		"steem": "^0.7.11"
 	},
-	"scripts": {},
 	"keywords": [
 		"steem",
 		"blockchain"

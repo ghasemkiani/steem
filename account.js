@@ -1,5 +1,3 @@
-//	@ghasemkiani/steem/account
-
 import {Obj} from "@ghasemkiani/base";
 import {cutil} from "@ghasemkiani/base";
 import {quantity} from "@ghasemkiani/base-utils";
@@ -8,11 +6,15 @@ import {asset} from "./asset.js";
 import {Post} from "./post.js";
 
 class Account extends Obj {
-	// _username
-	// _password
-	// _auth
-	// _data
-	// _json_metadata
+	static {
+		cutil.extend(this.prototype, {
+			_username: null,
+			_password: null,
+			_auth: null,
+			_data: null,
+			_json_metadata: null,
+		});
+	}
 
 	get username() {
 		return this._username;
@@ -27,7 +29,7 @@ class Account extends Obj {
 		this._password = password;
 	}
 	get data() {
-		if (!this._data) {
+		if (cutil.na(this._data)) {
 			this._data = {};
 		}
 		return this._data;
@@ -36,8 +38,8 @@ class Account extends Obj {
 		this._data = data;
 	}
 	get auth() {
-		if (!this._auth) {
-			if (this.username && this.password) {
+		if (cutil.na(this._auth)) {
+			if (cutil.a(this.username) && cutil.a(this.password)) {
 				let roles = ["owner", "active", "posting", "memo"];
 				let result = sutil.getPrivateKeys(this.username, this.password, roles);
 				this._auth = {};
@@ -72,12 +74,12 @@ class Account extends Obj {
 		return this._auth;
 	}
 	set auth(auth) {
-		if (!auth) {
+		if (cutil.na(auth)) {
 			this._auth = null;
 		} else {
 			this._auth = {};
 			let roles = ["owner", "active", "posting", "memo"];
-			roles.forEach(role => Object.assign((this._auth[role] = {}), auth[role]));
+			roles.forEach(role => cutil.assign((this._auth[role] = {}), auth[role]));
 		}
 	}
 
@@ -90,7 +92,7 @@ class Account extends Obj {
 	}
 
 	get json_metadata() {
-		if (!this._json_metadata) {
+		if (cutil.na(this._json_metadata)) {
 			try {
 				this._json_metadata = JSON.parse(this.data.json_metadata);
 			} catch (e) {

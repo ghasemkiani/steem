@@ -1,5 +1,3 @@
-//	@ghasemkiani/steem/asset
-
 import {Obj} from "@ghasemkiani/base";
 import {cutil} from "@ghasemkiani/base";
 import {Quantity} from "@ghasemkiani/base-utils";
