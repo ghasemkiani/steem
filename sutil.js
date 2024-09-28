@@ -5,6 +5,7 @@ import steem from "steem";
 import {Obj} from "@ghasemkiani/base";
 import {cutil} from "@ghasemkiani/base";
 import {quantity} from "@ghasemkiani/base-utils";
+import {CoinGecko} from "@ghasemkiani/coingecko-api";
 
 class SUtil extends Obj {
 	static {
@@ -39,9 +40,11 @@ class SUtil extends Obj {
 			price_sbd_btc: null,
 			_cmc: null,
 			_cc: null,
+			_cg: null,
 			_COINMARKETCAP_APIKEY: null,
 			lastUpdateTime: null,
 			_msUpdateInterval: null,
+      _cryptoPriceProvider: null,
 		});
 	}
 	get url() {
@@ -56,9 +59,18 @@ class SUtil extends Obj {
 			this._steem.api.setOptions({url: url});
 		}
 	}
+  get cryptoPriceProvider() {
+		if (cutil.na(this._cryptoPriceProvider)) {
+			this._cryptoPriceProvider = process.env["CRYPTO_PRICE_PROVIDER"] || "coingecko";
+		}
+		return this._cryptoPriceProvider;
+	}
+	set cryptoPriceProvider(cryptoPriceProvider) {
+		this._cryptoPriceProvider = cryptoPriceProvider;
+	}
 	get cmc() {
 		if(cutil.isNil(this._cmc)) {
-			this._cmc = process.env.CRYPTO_PRICE_PROVIDER ? /coinmarketcap/i.test(process.env.CRYPTO_PRICE_PROVIDER) : true;
+			this._cmc = /coinmarketcap/i.test(this.cryptoPriceProvider);
 		}
 		return this._cmc;
 	}
@@ -67,12 +79,21 @@ class SUtil extends Obj {
 	}
 	get cc() {
 		if(cutil.isNil(this._cc)) {
-			this._cc = process.env.CRYPTO_PRICE_PROVIDER ? /cryptocompare/i.test(process.env.CRYPTO_PRICE_PROVIDER) : false;
+			this._cc = /cryptocompare/i.test(this.cryptoPriceProvider);
 		}
 		return this._cc;
 	}
 	set cc(cc) {
 		this._cc = cc;
+	}
+	get cg() {
+		if(cutil.isNil(this._cg)) {
+			this._cg = /coingecko/i.test(this.cryptoPriceProvider);
+		}
+		return this._cg;
+	}
+	set cg(cg) {
+		this._cg = cg;
 	}
 	get msUpdateInterval() {
 		if(cutil.isNil(this._msUpdateInterval)) {
@@ -180,6 +201,16 @@ class SUtil extends Obj {
 		this.price_sbd_usd = result.USD;
 		this.price_sbd_btc = result.BTC;
 	}
+	async toGetCoinGeckoPrices() {
+		let cg = new CoinGecko();
+    cg.dontUpdate();
+    let {BTC, STEEM, SBD} = await cg.toGetPrices(["BTC", "STEEM", "SBD"])
+		this.price_btc_usd = BTC;
+		this.price_steem_usd = STEEM;
+		this.price_steem_btc = this.price_steem_usd / this.price_btc_usd;
+		this.price_sbd_usd = SBD;
+		this.price_sbd_btc = this.price_sbd_usd / this.price_btc_usd;
+	}
 	async toUpdateGlobals() {
 		await this.toGetDynamicGlobalProperties();
 		await this.toGetCurrentMedianHistoryPrice();
@@ -187,10 +218,11 @@ class SUtil extends Obj {
 		let now = Date.now();
 		if(cutil.isNil(this.lastUpdateTime) || ((now - this.lastUpdateTime) >= this.msUpdateInterval)) {
 			this.lastUpdateTime = now;
-			if(this.cmc) {
+			if(this.cg) {
+				await this.toGetCoinGeckoPrices();
+			} else if(this.cmc) {
 				await this.toGetCoinMarketCapPrices();
-			}
-			if(this.cc) {
+			} else if(this.cc) {
 				await this.toGetCryptoComparePrices();
 			}
 		}
