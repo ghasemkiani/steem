@@ -298,7 +298,7 @@ class SUtil extends Obj {
 		arg = Object.assign({
 			username: null,
 			from: -1,
-			limit: 100,
+			limit: 20,
 			count: -1,
 			forward: false,
 			onItem (item, items) {},
@@ -349,7 +349,7 @@ class SUtil extends Obj {
 		arg = Object.assign({
 			username: null,
 			from: -1,
-			limit: 100,
+			limit: 20,
 			count: -1,
 			forward: false,
 			async onItem (item, items) {},
@@ -442,7 +442,7 @@ class SUtil extends Obj {
 	async toGetFollowers(username, toCallback, startFollower) {
 		let following = username;
 		let followType = "blog";
-		let limit = 100;
+		let limit = 20;
 		let followers = [];
 		// let startFollower = null;
 		let array;
@@ -466,7 +466,7 @@ class SUtil extends Obj {
 	async toGetFollowing(username, toCallback, startFollowing) {
 		let follower = username;
 		let followType = "blog";
-		let limit = 100;
+		let limit = 20;
 		let following = [];
 		// let startFollowing = null;
 		let array;
@@ -731,8 +731,8 @@ class SUtil extends Obj {
 		}
 		arg = Object.assign({
 			tag: "science",
-			limit: 100,
-			count: 100,
+			limit: 20,
+			count: 20,
 			start_author: null,
 			start_permlink: null,
 		}, arg);
