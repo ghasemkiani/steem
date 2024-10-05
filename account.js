@@ -43,10 +43,12 @@ class Account extends Obj {
 				let roles = ["owner", "active", "posting", "memo"];
 				let result = sutil.getPrivateKeys(this.username, this.password, roles);
 				this._auth = {};
-				roles.forEach(role => this._auth[role] = {
+        for (let role of roles) {
+          this._auth[role] = {
 						address: result[role + "Pubkey"],
 						key: result[role],
-					});
+					};
+        }
 			} else if ("id" in this.data) {
 				this._auth = {
 					"owner": {
@@ -79,7 +81,9 @@ class Account extends Obj {
 		} else {
 			this._auth = {};
 			let roles = ["owner", "active", "posting", "memo"];
-			roles.forEach(role => cutil.assign((this._auth[role] = {}), auth[role]));
+      for (let role of roles) {
+        cutil.assign((this._auth[role] = {}), auth[role]);
+      }
 		}
 	}
 
