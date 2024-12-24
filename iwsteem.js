@@ -33,14 +33,14 @@ const iwsteem = {
   _keyMemo: null,
   _account: null,
   get username() {
-		if (cutil.na(this._username) && cutil.a(this.prefs.username)) {
+    if (cutil.na(this._username) && cutil.a(this.prefs.username)) {
       this._username = this.prefs.username;
     }
-		return this._username;
-	},
-	set username(username) {
-		this._username = username;
-	},
+    return this._username;
+  },
+  set username(username) {
+    this._username = username;
+  },
   get kPassword() {
     if (cutil.na(this._kPassword)) {
       this._kPassword = this.prefs.kPassword;
@@ -60,41 +60,41 @@ const iwsteem = {
     this._password = password;
   },
   get addressOwner() {
-		if (cutil.na(this._addressOwner) && cutil.a(this.prefs.addressOwner)) {
+    if (cutil.na(this._addressOwner) && cutil.a(this.prefs.addressOwner)) {
       this._addressOwner = this.prefs.addressOwner;
     }
-		return this._addressOwner;
-	},
-	set addressOwner(addressOwner) {
-		this._addressOwner = addressOwner;
-	},
+    return this._addressOwner;
+  },
+  set addressOwner(addressOwner) {
+    this._addressOwner = addressOwner;
+  },
   get addressActive() {
-		if (cutil.na(this._addressActive) && cutil.a(this.prefs.addressActive)) {
+    if (cutil.na(this._addressActive) && cutil.a(this.prefs.addressActive)) {
       this._addressActive = this.prefs.addressActive;
     }
-		return this._addressActive;
-	},
-	set addressActive(addressActive) {
-		this._addressActive = addressActive;
-	},
+    return this._addressActive;
+  },
+  set addressActive(addressActive) {
+    this._addressActive = addressActive;
+  },
   get addressPosting() {
-		if (cutil.na(this._addressPosting) && cutil.a(this.prefs.addressPosting)) {
+    if (cutil.na(this._addressPosting) && cutil.a(this.prefs.addressPosting)) {
       this._addressPosting = this.prefs.addressPosting;
     }
-		return this._addressPosting;
-	},
-	set addressPosting(addressPosting) {
-		this._addressPosting = addressPosting;
-	},
+    return this._addressPosting;
+  },
+  set addressPosting(addressPosting) {
+    this._addressPosting = addressPosting;
+  },
   get addressMemo() {
-		if (cutil.na(this._addressMemo) && cutil.a(this.prefs.addressMemo)) {
+    if (cutil.na(this._addressMemo) && cutil.a(this.prefs.addressMemo)) {
       this._addressMemo = this.prefs.addressMemo;
     }
-		return this._addressMemo;
-	},
-	set addressMemo(addressMemo) {
-		this._addressMemo = addressMemo;
-	},
+    return this._addressMemo;
+  },
+  set addressMemo(addressMemo) {
+    this._addressMemo = addressMemo;
+  },
   get kKeyOwner() {
     if (cutil.na(this._kKeyOwner)) {
       this._kKeyOwner = this.prefs.kKeyOwner;
@@ -168,8 +168,8 @@ const iwsteem = {
     this._keyMemo = keyMemo;
   },
   get account() {
-		if (cutil.na(this._account)) {
-			this._account = new Account({
+    if (cutil.na(this._account)) {
+      this._account = new Account({
         username: this.username,
         password: this.password,
         auth: {
@@ -191,40 +191,97 @@ const iwsteem = {
           },
         },
       });
-		}
-		return this._account;
-	},
-	set account(account) {
-		this._account = account;
-	},
+    }
+    return this._account;
+  },
+  set account(account) {
+    this._account = account;
+  },
   async toDefineInitOptionsIWSteem() {
     let app = this;
-    app.commander.option("--set-username <username>", "set username persistently");
+    app.commander.option(
+      "--set-username <username>",
+      "set username persistently",
+    );
     app.commander.option("--username <username>", "set username");
-    app.commander.option("--set-k-password <kPassword>", "set pass key for password persistently");
-    app.commander.option("-k, --k-password <kPassword>", "set pass key for password");
+    app.commander.option(
+      "--set-k-password <kPassword>",
+      "set pass key for password persistently",
+    );
+    app.commander.option(
+      "-k, --k-password <kPassword>",
+      "set pass key for password",
+    );
     app.commander.option("-P, --password <password>", "set password");
-    app.commander.option("--set-address-owner <addressOwner>", "set owner address persistently");
+    app.commander.option(
+      "--set-address-owner <addressOwner>",
+      "set owner address persistently",
+    );
     app.commander.option("--address-owner <addressOwner>", "set owner address");
-    app.commander.option("--set-address-active <addressActive>", "set active address persistently");
-    app.commander.option("--address-active <addressActive>", "set active address");
-    app.commander.option("--set-address-active <addressActive>", "set active address persistently");
-    app.commander.option("--address-active <addressActive>", "set active address");
-    app.commander.option("--set-address-posting <addressPosting>", "set posting address persistently");
-    app.commander.option("--address-posting <addressPosting>", "set posting address");
-    app.commander.option("--set-address-memo <addressMemo>", "set memo address persistently");
+    app.commander.option(
+      "--set-address-active <addressActive>",
+      "set active address persistently",
+    );
+    app.commander.option(
+      "--address-active <addressActive>",
+      "set active address",
+    );
+    app.commander.option(
+      "--set-address-active <addressActive>",
+      "set active address persistently",
+    );
+    app.commander.option(
+      "--address-active <addressActive>",
+      "set active address",
+    );
+    app.commander.option(
+      "--set-address-posting <addressPosting>",
+      "set posting address persistently",
+    );
+    app.commander.option(
+      "--address-posting <addressPosting>",
+      "set posting address",
+    );
+    app.commander.option(
+      "--set-address-memo <addressMemo>",
+      "set memo address persistently",
+    );
     app.commander.option("--address-memo <addressMemo>", "set memo address");
-    app.commander.option("--set-k-key-owner <kKeyOwner>", "set pass key for owner key persistently");
-    app.commander.option("--k-key-owner <kKeyOwner>", "set pass key for owner key");
+    app.commander.option(
+      "--set-k-key-owner <kKeyOwner>",
+      "set pass key for owner key persistently",
+    );
+    app.commander.option(
+      "--k-key-owner <kKeyOwner>",
+      "set pass key for owner key",
+    );
     app.commander.option("--key-owner <keyOwner>", "set owner key");
-    app.commander.option("--set-k-key-active <kKeyActive>", "set pass key for active key persistently");
-    app.commander.option("--k-key-active <kKeyActive>", "set pass key for active key");
+    app.commander.option(
+      "--set-k-key-active <kKeyActive>",
+      "set pass key for active key persistently",
+    );
+    app.commander.option(
+      "--k-key-active <kKeyActive>",
+      "set pass key for active key",
+    );
     app.commander.option("--key-active <keyActive>", "set active key");
-    app.commander.option("--set-k-key-posting <kKeyPosting>", "set pass key for posting key persistently");
-    app.commander.option("--k-key-posting <kKeyPosting>", "set pass key for posting key");
+    app.commander.option(
+      "--set-k-key-posting <kKeyPosting>",
+      "set pass key for posting key persistently",
+    );
+    app.commander.option(
+      "--k-key-posting <kKeyPosting>",
+      "set pass key for posting key",
+    );
     app.commander.option("--key-posting <keyPosting>", "set posting key");
-    app.commander.option("--set-k-key-memo <kKeyMemo>", "set pass key for memo key persistently");
-    app.commander.option("--k-key-memo <kKeyMemo>", "set pass key for memo key");
+    app.commander.option(
+      "--set-k-key-memo <kKeyMemo>",
+      "set pass key for memo key persistently",
+    );
+    app.commander.option(
+      "--k-key-memo <kKeyMemo>",
+      "set pass key for memo key",
+    );
     app.commander.option("--key-memo <keyMemo>", "set memo key");
   },
   async toApplyInitOptionsIWSteem() {
