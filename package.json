@@ -1,24 +1,24 @@
 {
-	"name": "@ghasemkiani/steem",
-	"version": "2.3.0",
-	"description": "Utility classes for working with the STEEM blockchain",
-	"type": "module",
-	"main": "index.js",
-	"scripts": {},
-	"repository": {
-		"type": "git",
-		"url": "git+https://github.com/ghasemkiani/steem.git"
-	},
-	"dependencies": {
-		"@ghasemkiani/base": "github:ghasemkiani/base",
-		"@ghasemkiani/base-utils": "github:ghasemkiani/base-utils",
-		"@ghasemkiani/coingecko-api": "github:ghasemkiani/coingecko-api",
-		"steem": "^0.7.11"
-	},
-	"keywords": [
-		"steem",
-		"blockchain"
-	],
-	"author": "Ghasem Kiani",
-	"license": "MIT"
+  "name": "@ghasemkiani/steem",
+  "version": "2.3.1",
+  "description": "Utility classes for working with the STEEM blockchain",
+  "type": "module",
+  "main": "index.js",
+  "scripts": {},
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/ghasemkiani/steem.git"
+  },
+  "dependencies": {
+    "@ghasemkiani/base": "github:ghasemkiani/base",
+    "@ghasemkiani/base-utils": "github:ghasemkiani/base-utils",
+    "@ghasemkiani/coingecko-api": "github:ghasemkiani/coingecko-api",
+    "steem": "^0.7.11"
+  },
+  "keywords": [
+    "steem",
+    "blockchain"
+  ],
+  "author": "Ghasem Kiani",
+  "license": "MIT"
 }

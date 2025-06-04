@@ -14,6 +14,7 @@ const iwsteem = {
     kKeyActive: null,
     kKeyPosting: null,
     kKeyMemo: null,
+    fromPass: null,
   },
   // pass: null,
   _username: null,
@@ -32,6 +33,7 @@ const iwsteem = {
   _keyPosting: null,
   _keyMemo: null,
   _account: null,
+  _fromPass: null,
   get username() {
     if (cutil.na(this._username) && cutil.a(this.prefs.username)) {
       this._username = this.prefs.username;
@@ -167,12 +169,23 @@ const iwsteem = {
   set keyMemo(keyMemo) {
     this._keyMemo = keyMemo;
   },
+  get fromPass() {
+    if (cutil.na(this._fromPass) && cutil.a(this.prefs.fromPass)) {
+      this._fromPass = this.prefs.fromPass;
+    }
+    return this._fromPass;
+  },
+  set fromPass(fromPass) {
+    this._fromPass = fromPass;
+  },
   get account() {
     if (cutil.na(this._account)) {
-      this._account = new Account({
-        username: this.username,
-        password: this.password,
-        auth: {
+      let arg = {};
+      arg.username = this.username;
+      if (cutil.a(this.password)) {
+        arg.password = this.password;
+      } else {
+        arg.auth = {
           owner: {
             address: this.addressOwner,
             key: this.keyOwner,
@@ -189,8 +202,9 @@ const iwsteem = {
             address: this.addressMemo,
             key: this.keyMemo,
           },
-        },
-      });
+        };
+      }
+      this._account = new Account(arg);
     }
     return this._account;
   },
@@ -283,6 +297,8 @@ const iwsteem = {
       "set pass key for memo key",
     );
     app.commander.option("--key-memo <keyMemo>", "set memo key");
+    app.commander.option("--from-pass", "set auth from pass db");
+    app.commander.option("--set-from-pass", "set auth from pass db persistently");
   },
   async toApplyInitOptionsIWSteem() {
     let app = this;
@@ -372,6 +388,22 @@ const iwsteem = {
     if (cutil.a(opts.keyMemo)) {
       app.keyMemo = opts.keyMemo;
     }
+    if (cutil.a(opts.setFromPass)) {
+      app.fromPass = null;
+      app.prefs.fromPass = opts.setFromPass;
+    }
+    if (cutil.a(opts.fromPass)) {
+      app.fromPass = opts.fromPass;
+    }
+    if (app.fromPass) {
+      app.setAuthFromPass();
+    }
+  },
+  setAuthFromPass() {
+    let app = this;
+    let { pass } = app;
+    let { username } = app;
+    app.password = pass.get(`steemit.com/${username}`);
   },
 };
 
