@@ -458,7 +458,7 @@ class SUtil extends Obj {
     permlink = null,
     title = null,
     body = null,
-    tags= ["post"],
+    tags = ["post"],
     app = this.appName,
     format = "markdown",
     jsonMetadata = null,

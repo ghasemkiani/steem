@@ -1,6 +1,6 @@
 {
   "name": "@ghasemkiani/steem",
-  "version": "2.3.3",
+  "version": "2.3.4",
   "description": "Utility classes for working with the STEEM blockchain",
   "type": "module",
   "main": "index.js",
