@@ -452,47 +452,23 @@ class SUtil extends Obj {
       jsonMetadata,
     );
   }
-  async toPost(arg) {
-    arg = Object.assign(
-      {
-        wif: null,
-        author: null,
-        permlink: null,
-        title: null,
-        body: null,
-        tags: ["post"],
-        app: this.appName,
-        format: "markdown",
-        jsonMetadata: null,
-      },
-      arg,
-    );
-    let {
-      wif,
-      author,
-      permlink,
-      title,
-      body,
-      tags,
-      app,
-      format,
-      jsonMetadata,
-    } = arg;
+  async toPost({
+    wif = null,
+    author = null,
+    permlink = null,
+    title = null,
+    body = null,
+    tags= ["post"],
+    app = this.appName,
+    format = "markdown",
+    jsonMetadata = null,
+  } = {}) {
     if (cutil.isString(tags)) {
       tags = tags.trim().split(/\s+/g);
     }
     let parentAuthor = "";
     let mainCategory = tags[0];
-    jsonMetadata = JSON.stringify(
-      Object.assign(
-        {
-          tags: tags,
-          app: app,
-          format: format,
-        },
-        jsonMetadata,
-      ),
-    );
+    jsonMetadata = JSON.stringify({ tags, app, format, ...jsonMetadata });
     return await this.steem.broadcast.commentAsync(
       wif,
       parentAuthor,
